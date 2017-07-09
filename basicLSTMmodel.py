@@ -31,16 +31,23 @@ from keras.models import Model
 #
 # Create input sequences
 #
-train_data_new = []
-train_data_new.append([1, 2, 3, 4, 5, 6, 7])
-train_data_new.append([10, 9, 8, 7, 6, 5, 4])
-train_data_new.append([10, 9, 8, 7, 6, 5, 4])
-train_data_new.append([1, 2, 3, 4, 5, 6, 7])
-train_data_new.append([10, 9, 8, 7, 6, 5, 4])
-train_data_new.append([10, 9, 8, 7, 6, 5, 4])
-train_data_new.append([1, 2, 3, 4, 5, 6, 7])
-train_data_new.append([10, 9, 8, 7, 6, 5, 4])
-train_data_new.append([1, 2, 3, 4, 5, 6, 7])
+X_train = []
+
+upsweep=np.array((1,2,3,4,5,6,7))
+upsweep = np.expand_dims(upsweep,axis=1)
+downsweep=np.array((10, 9, 8, 7, 6, 5, 4))
+downsweep = np.expand_dims(downsweep,axis=1)
+
+X_train.append(upsweep)
+X_train.append(downsweep)
+X_train.append(downsweep)
+X_train.append(upsweep)
+X_train.append(downsweep)
+X_train.append(downsweep)
+X_train.append(upsweep)
+X_train.append(downsweep)
+X_train.append(upsweep)
+X_train = np.array(X_train)
 
 
 # preparing y_train
@@ -71,8 +78,8 @@ print(model.summary())
 #
 # Train
 # 
-##print('Training model...')
-###model.fit(X_train, y_train, epochs=1)
+print('Training model...')
+model.fit(X_train, y_train, epochs=10)
 
 #
 # output predictions
