@@ -33,34 +33,38 @@ from keras.models import Model
 #
 X_train = []
 
-upsweep=np.array((1,2,3,4,5,6,7))
+upsweep=np.array((1, 2, 3, 4, 5, 6, 7))-5
+upsweep=upsweep/10.0
 upsweep = np.expand_dims(upsweep,axis=1)
-downsweep=np.array((10, 9, 8, 7, 6, 5, 4))
+downsweep=np.array((10, 9, 8, 7, 6, 5, 4))-5
+downsweep=downsweep/10.0
 downsweep = np.expand_dims(downsweep,axis=1)
 
 X_train.append(upsweep)
 X_train.append(downsweep)
-X_train.append(downsweep)
-X_train.append(upsweep)
-X_train.append(downsweep)
-X_train.append(downsweep)
-X_train.append(upsweep)
-X_train.append(downsweep)
-X_train.append(upsweep)
+###X_train.append(downsweep)
+#X_train.append(upsweep)
+#X_train.append(downsweep)
+#X_train.append(downsweep)
+#X_train.append(upsweep)
+#X_train.append(downsweep)
+#X_train.append(upsweep)
+
 X_train = np.array(X_train)
 
 
 # preparing y_train
 y_train = []
-y_train.append([1,0])
-y_train.append([0,1])
-y_train.append([0,1])
-y_train.append([1,0])
-y_train.append([0,1])
-y_train.append([0,1])
-y_train.append([1,0])
-y_train.append([0,1])
-y_train.append([1,0])
+y_train.append([8])
+y_train.append([3])
+###y_train.append([3])
+#y_train.append([0,1])
+#y_train.append([1,0])
+#y_train.append([0,1])
+#y_train.append([0,1])
+#y_train.append([1,0])
+#y_train.append([0,1])
+#y_train.append([1,0])
 
 y_train = np.array(y_train)
 
@@ -70,9 +74,9 @@ y_train = np.array(y_train)
 
 inputs = Input(shape=(7,1), name='Input1')
 ###x = LSTM(units=1, name='LSTM1')(inputs)
-x = SimpleRNN(units=1, name='SimpleRNN1')(inputs)
+x = SimpleRNN(2, name='SimpleRNN1')(inputs)
 x = Dense(2)(x)
-predictions = Dense(2, activation='sigmoid', name='Dense1')(x)
+predictions = Dense(1, name='Dense1')(x)
 model = Model(inputs=inputs, outputs=predictions)
 model.compile(loss='mse', optimizer='rmsprop', metrics=['accuracy'])
 print(model.summary())
@@ -81,13 +85,14 @@ print(model.summary())
 # Train
 # 
 print('Training model...')
-model.fit(X_train, y_train, epochs=10, batch_size=1)
+model.fit(X_train, y_train, epochs=1000, batch_size=2)
 
 #
 # output predictions
 #
 print(model.get_weights()[0][0])
-predictions = model.predict(X_train)
+model_predictions = model.predict(X_train)
+print('model_predictions = ', model_predictions)
 
 #
 # Other diagnostics
