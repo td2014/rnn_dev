@@ -25,7 +25,7 @@ K.set_session(sess)
 # End:  Set up environment for reproduction of results
 
 #
-from keras.layers import LSTM, Dense, Input
+from keras.layers import LSTM, Dense, Input, SimpleRNN
 from keras.models import Model
 
 #
@@ -69,7 +69,9 @@ y_train = np.array(y_train)
 #
 
 inputs = Input(shape=(7,1), name='Input1')
-x = LSTM(units=1, name='LSTM1')(inputs)
+###x = LSTM(units=1, name='LSTM1')(inputs)
+x = SimpleRNN(units=1, name='SimpleRNN1')(inputs)
+x = Dense(2)(x)
 predictions = Dense(2, activation='sigmoid', name='Dense1')(x)
 model = Model(inputs=inputs, outputs=predictions)
 model.compile(loss='mse', optimizer='rmsprop', metrics=['accuracy'])
@@ -79,13 +81,13 @@ print(model.summary())
 # Train
 # 
 print('Training model...')
-model.fit(X_train, y_train, epochs=10)
+model.fit(X_train, y_train, epochs=10, batch_size=1)
 
 #
 # output predictions
 #
-##print(model.get_weights()[0][0])
-##predictions = model.predict(X_train)
+print(model.get_weights()[0][0])
+predictions = model.predict(X_train)
 
 #
 # Other diagnostics
