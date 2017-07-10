@@ -25,7 +25,7 @@ for iLoop in range(10):
 y = []
 y.append(-1) #-2
 y.append(-1)  #4
-a = -0.8  # -0.8  causes oscillation
+a = -0.8  # -0.8  causes oscillation, x = 0.276393, x = 0.723607
 b = 0.2  # 0.2 causes oscillation
 
 for iLoop in range(100):
