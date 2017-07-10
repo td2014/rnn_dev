@@ -79,7 +79,7 @@ y_train = np.array(y_train)
 #
 
 inputs = Input(shape=(1000,1), name='Input1')
-x = LSTM(units=2, name='LSTM1')(inputs)
+x = LSTM(units=1, name='LSTM1')(inputs)
 ###x = SimpleRNN(units=2, name='SimpleRNN1')(inputs)
 x = Dense(2)(x)
 predictions = Dense(1, name='Dense1')(x)
@@ -91,7 +91,7 @@ print(model.summary())
 # Train
 # 
 print('Training model...')
-model.fit(X_train, y_train, epochs=100, batch_size=2)
+model.fit(X_train, y_train, epochs=500, batch_size=2)
 
 #
 # output predictions
