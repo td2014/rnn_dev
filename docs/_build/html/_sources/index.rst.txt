@@ -3,15 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to rnn_dev's documentation.
+Recurrent Neural Networks Project
+=================================
+
 This project contains both a technical
 discussion about recurrent neural networks
-(RNNs) and also some example code.
-===================================
+(RNNs) and some example code.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   overview
+   recurrence_theory
+   RNN_implementations
+   RNN_design
+   RNN_analysis
+
 
 
 
