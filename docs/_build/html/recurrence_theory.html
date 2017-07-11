@@ -24,7 +24,6 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="RNN Implementations" href="RNN_implementations.html" />
@@ -46,17 +45,20 @@
             
   <div class="section" id="recurrence-theory">
 <h1>Recurrence Theory<a class="headerlink" href="#recurrence-theory" title="Permalink to this headline">¶</a></h1>
-<p>Introduction
-——————</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The key idea is that we assume that we are trying to model a sequence of some type.  When we say sequence, this could be a time ordered series of numbers or other symbols (like English text).  An important aspect is that the ordering (time or position in a sentence) has some meaning and is important to the overall model.  For example “the cat is over” evokes a meaning, whereas “eht tac si revo” (reversing each word in place) has no obvious meaning in English, even though the symbols are exactly the same in both sentences.</p>
 <p>Recurrent Neural Networks attempt to model the sequential aspects of sentences like the first one above in order to, for example, predict which letter or word typically follows a given sequence.  Perhaps in the case above, the full sentence might be “the cat is over there near the fireplace” - if we were designing a completion algorithm for a search engine, it would be useful if the system knew that the completion (a common one) is “there near the fireplace.”</p>
-<p>One point should be made in the above.  It’s possible that some other type of network could learn a mapping between the sentence “the cat is over” and the next word (or words) without direct knowledge of the sequential nature, just by some measure of the actual sumbols present.  Depending on the sentence, it might be enough to have a particular group of symbols in any order.  In the given case, with the symbols given, there probably aren’t too many sentences you could construct that make sense, so that the jumbled up version of the sentences is equally informative in this case.</p>
-<p>Conceptual Model
-————————</p>
-<p>One approach we can use to motivate the theory of RNNs, is to use concepts from the digital signal processing and time series analysis domains.  We can think of our RNN as a filter which takes a given input and maps it to a desired output.  The process of training the RNN computes the necessary filter coefficients to accomplish this.  To be concrete, let us take the following expression as representing our discrete time filter</p>
+<p>One point should be made in the above.  It’s possible that some other type of network could learn a mapping between the sentence “the cat is over” and the next word (or words) without direct knowledge of the sequential nature, just by some measure of the actual symbols present.  Depending on the sentence, it might be enough to have a particular group of symbols in any order.  In the given case, with the symbols given, there probably aren’t too many sentences you could construct that make sense, so that the jumbled up version of the sentences is equally informative in this case.</p>
+</div>
+<div class="section" id="conceptual-model">
+<h2>Conceptual Model<a class="headerlink" href="#conceptual-model" title="Permalink to this headline">¶</a></h2>
+<p>One approach we can use to motivate the theory of RNNs, is to use concepts from the digital signal processing and time series analysis domains.  We can think of our RNN as a filter which takes a given input and maps it to a desired output.  The process of training the RNN computes the necessary filter coefficients to accomplish this.  To be concrete, let us take the following expression as representing our discrete time filter <img class="math" src="_images/math/7aad026aa8fa3c35cc51797c88bd35ae4980701b.png" alt="y(t)"/>,</p>
 <div class="math">
-\[\]</div>
-<p>y(t) = alpha_{1} y(t-1) + alpha_{2} y(t-2) + ldots + alpha_{N} y(t-N) + beta_{0} x(t) + beta_{1} x(t-1) + beta_{2} x(t-2) + ldots + beta_{M} x(t-M)</p>
+<p><img src="_images/math/7cb32e6fac125e52c3debaf92cac4baf70f6b7ba.png" alt="y(t) = &amp; \alpha_{1} y(t-1) + \alpha_{2} y(t-2) + \ldots + \alpha_{N} y(t-N) + \\
+       &amp; \beta_{0} x(t) + \beta_{1} x(t-1) + \beta_{2} x(t-2) + \ldots + \beta_{M} x(t-M)"/></p>
+</div><p>where the <img class="math" src="_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/> and <img class="math" src="_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/> terms are the filter coefficients (to be determined), the <img class="math" src="_images/math/7854a4b2875dd614f1735c2ad17262fb97d129b7.png" alt="x(t)"/> terms are inputs to the filter at particular times, and lastly <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> and <img class="math" src="_images/math/450a8e2c2320d77181e0d4fc68c947e9a5de8ecb.png" alt="M"/> represent the order of the filter (number of terms of each type).  As can be seen, we include both terms which are <em>recursive</em>, meaning outputs of the filter at delayed times such as <img class="math" src="_images/math/dbef0a8e10b308573049b7eec73af187f8046842.png" alt="y(t-1)"/>, and non-recursive, meaning inputs to the filter at times such as <img class="math" src="_images/math/7854a4b2875dd614f1735c2ad17262fb97d129b7.png" alt="x(t)"/> and <img class="math" src="_images/math/bcd703260bd9faf8787bf3dd7a719713f5ebde5a.png" alt="x(t-1)"/>.</p>
+</div>
 </div>
 
 
@@ -64,7 +66,16 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Recurrence Theory</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#conceptual-model">Conceptual Model</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
