@@ -25,7 +25,7 @@ K.set_session(sess)
 # End:  Set up environment for reproduction of results
 
 #
-from keras.layers import LSTM, Dense, Input, SimpleRNN
+from keras.layers import LSTM, Dense, Input
 from keras.models import Model
 
 #
@@ -80,7 +80,6 @@ y_train = np.array(y_train)
 
 inputs = Input(shape=(1000,1), name='Input1')
 x = LSTM(units=1, name='LSTM1')(inputs)
-###x = SimpleRNN(units=2, name='SimpleRNN1')(inputs)
 x = Dense(2)(x)
 predictions = Dense(1, name='Dense1')(x)
 model = Model(inputs=inputs, outputs=predictions)
@@ -106,9 +105,6 @@ print('model_predictions = ', model_predictions)
 #print()
 #model.evaluate(X_train, y_train)
 
-#
-# Ref values for one epoch:   [0.24794224, 0.66666669]
-#
 
 #
 # End of script

@@ -10,3 +10,12 @@ to a more general framework from a signal processing basis.  Then, some common i
 will be introduced with examples, to gain some familiarity with RNNs in practice.
 
 The next section will provide some design guidance as well as some analysis practices.
+
+
+Basic recurrance architecture
+-----------------------------
+
+To begin with, let us consider a basic recurrant architecture (RNN).  The most simple version is a single node with an input that is derived from its output as follows:
+
+.. image:: 14by14axes.jpg
+
