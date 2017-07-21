@@ -17,6 +17,5 @@ Basic recurrance architecture
 
 To begin with, let us consider a basic recurrant architecture (RNN).  The most simple version is a single node with an input that is derived from its output as follows:
 
-.. image:: graphics/14by14axes.jpg
-.. image:: graphics/flag.svg
+.. image:: graphics/rec_network.svg
 
