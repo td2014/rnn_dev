@@ -20,8 +20,6 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-# sys.path.append(os.path.abspath('~/anaconda/envs/rnn_dev/lib/python3.5/site-packages/graphviz'))
-graphviz_dot = '/Users/anthonydaniell/anaconda/envs/rnn_dev/lib/python3.5/site-packages/graphviz/dot.py'
 
 
 # -- General configuration ------------------------------------------------
@@ -34,7 +32,7 @@ graphviz_dot = '/Users/anthonydaniell/anaconda/envs/rnn_dev/lib/python3.5/site-p
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.imgmath',
+    'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.graphviz']
 
