@@ -57,26 +57,33 @@ from keras.models import Model
 #
 # Create input sequences
 #
-zerosLen = 100
-onesLen = 300
+zerosLen = 10
+onesLen = 30
+totalLen = zerosLen+onesLen
 zerosArray=np.zeros(zerosLen)
 onesArray=np.ones(onesLen)
 zerosArray = np.expand_dims(zerosArray, axis=1)
 onesArray = np.expand_dims(onesArray, axis=1)
 
-X_train = np.concatenate((zerosArray, onesArray))
-X_train = np.expand_dims(X_train,axis=0)
+X_train_base = np.concatenate((zerosArray, onesArray))
+
+X_train = []
+for iStep in range(totalLen):
+    X_train.append(np.roll(X_train_base,-iStep)) #rotate by one step each time
+     
+
+X_train = np.array(X_train)
 
 # preparing y_train
 y_train = []
-y_train = X_train.copy()
-y_train = np.squeeze(y_train,axis=0)
+y_train = X_train_base.copy()
+y_train = np.array(y_train)
 
 #
 # Create model
 #
 
-inputs = Input(shape=(400,1), name='Input1')
+inputs = Input(shape=(totalLen,1), name='Input1')
 x = LSTM(units=1, name='LSTM1')(inputs)
 model = Model(inputs=inputs, outputs=x)
 model.compile(loss='mae', optimizer='rmsprop', metrics=['accuracy'])
@@ -86,7 +93,7 @@ print(model.summary())
 # Train
 # 
 print('Training model...')
-model.fit(X_train, y_train, epochs=500, batch_size=1)
+model.fit(X_train, y_train, epochs=10, batch_size=1)
 
 #
 # output predictions
