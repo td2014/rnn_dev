@@ -51,14 +51,14 @@ K.set_session(sess)
 # End:  Set up environment for reproduction of results
 
 #
-from keras.layers import LSTM, Dense, Input
+from keras.layers import LSTM, Input
 from keras.models import Model
 
 #
 # Create input sequences
 #
-zerosLen = 10
-onesLen = 30
+zerosLen = 20
+onesLen = 60
 totalLen = zerosLen+onesLen
 zerosArray=np.zeros(zerosLen)
 onesArray=np.ones(onesLen)
@@ -77,7 +77,7 @@ X_train = np.array(X_train)
 # preparing y_train
 y_train = []
 y_train = X_train_base.copy()
-y_train = np.array(y_train)
+y_train = np.array(y_train) # shift for time delay
 
 #
 # Create model
@@ -86,28 +86,25 @@ y_train = np.array(y_train)
 inputs = Input(shape=(totalLen,1), name='Input1')
 x = LSTM(units=1, name='LSTM1')(inputs)
 model = Model(inputs=inputs, outputs=x)
-model.compile(loss='mae', optimizer='rmsprop', metrics=['accuracy'])
+model.compile(loss='mse', optimizer='rmsprop', metrics=['accuracy'])
 print(model.summary())
 
 #
 # Train
 # 
 print('Training model...')
-model.fit(X_train, y_train, epochs=10, batch_size=1)
+model.fit(X_train, y_train, epochs=200, batch_size=1)
 
 #
 # output predictions
 #
 #print(model.get_weights()[0][0])
-#model_predictions = model.predict(X_train)
-#print('model_predictions = ', model_predictions)
+model_predictions = model.predict(X_train)
+print('model_predictions = ', model_predictions)
 
 #
 # Other diagnostics
 #
-#print()
-#model.evaluate(X_train, y_train)
-
 
 #
 # End of script
