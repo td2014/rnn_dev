@@ -57,58 +57,28 @@ from keras.models import Model
 #
 # Create input sequences
 #
-X_train = []
-up_start = 0
-up_end = 1000
-down_start=2000
-down_end=1000
-up_array = np.linspace(up_start,up_end,int(up_end-up_start))
-upsweep=np.array(up_array)-(up_end+up_start)/2.0
-upsweep=upsweep/(1.0*np.max((up_start,up_end)))
-upsweep = np.expand_dims(upsweep,axis=1)
+zerosLen = 100
+onesLen = 300
+zerosArray=np.zeros(zerosLen)
+onesArray=np.ones(onesLen)
+zerosArray = np.expand_dims(zerosArray, axis=1)
+onesArray = np.expand_dims(onesArray, axis=1)
 
-down_array = np.linspace(down_start,down_end,int(down_start-down_end))
-downsweep=np.array(down_array)-(down_start+down_end)/2.0
-downsweep=downsweep/(1.0*np.max((down_start,down_end)))
-downsweep = np.expand_dims(downsweep,axis=1)
-
-X_train.append(upsweep)
-X_train.append(downsweep)
-###X_train.append(downsweep)
-#X_train.append(upsweep)
-#X_train.append(downsweep)
-#X_train.append(downsweep)
-#X_train.append(upsweep)
-#X_train.append(downsweep)
-#X_train.append(upsweep)
-
-X_train = np.array(X_train)
-
+X_train = np.concatenate((zerosArray, onesArray))
+X_train = np.expand_dims(X_train,axis=0)
 
 # preparing y_train
 y_train = []
-y_train.append(2*upsweep[999]-upsweep[998])
-y_train.append(2*downsweep[999]-downsweep[998])
-###y_train.append([3])
-#y_train.append([0,1])
-#y_train.append([1,0])
-#y_train.append([0,1])
-#y_train.append([0,1])
-#y_train.append([1,0])
-#y_train.append([0,1])
-#y_train.append([1,0])
-
-y_train = np.array(y_train)
+y_train = X_train.copy()
+y_train = np.squeeze(y_train,axis=0)
 
 #
 # Create model
 #
 
-inputs = Input(shape=(1000,1), name='Input1')
+inputs = Input(shape=(400,1), name='Input1')
 x = LSTM(units=1, name='LSTM1')(inputs)
-x = Dense(2)(x)
-predictions = Dense(1, name='Dense1')(x)
-model = Model(inputs=inputs, outputs=predictions)
+model = Model(inputs=inputs, outputs=x)
 model.compile(loss='mae', optimizer='rmsprop', metrics=['accuracy'])
 print(model.summary())
 
@@ -116,14 +86,14 @@ print(model.summary())
 # Train
 # 
 print('Training model...')
-model.fit(X_train, y_train, epochs=500, batch_size=2)
+model.fit(X_train, y_train, epochs=500, batch_size=1)
 
 #
 # output predictions
 #
-print(model.get_weights()[0][0])
-model_predictions = model.predict(X_train)
-print('model_predictions = ', model_predictions)
+#print(model.get_weights()[0][0])
+#model_predictions = model.predict(X_train)
+#print('model_predictions = ', model_predictions)
 
 #
 # Other diagnostics
